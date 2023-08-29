@@ -181,6 +181,15 @@ func Cli(w *tabwriter.Writer, version string, exitFunc func(int)) {
 		return
 	}
 
+	// If first argument is a number then it must be the http code
+	if len(os.Args) == 2 && *code == "" {
+		possibleCode := os.Args[1]
+		_, err := strconv.Atoi(possibleCode)
+		if err == nil {
+			*code = possibleCode
+		}
+	}
+
 	// If the code flag is provided, print the status text
 	if *code != "" {
 		err := printStatusText(w, *code)
